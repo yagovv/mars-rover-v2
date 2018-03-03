@@ -47,28 +47,28 @@ function moveForward(rover) {
   var offGrid = false;
   switch (rover.direction) {
     case "N":
-      if (rover.y++ > 9) {
+      if (rover.y+1 > 9) {
         offGrid = true;
       } else {
         rover.y++;
       }
       break;
     case "E":
-      if (rover.x++ > 9) {
+      if (rover.x+1 > 9) {
         offGrid = true;
       } else {
         rover.x++;
       }
       break;
     case "S":
-      if (rover.y-- < 0) {
+      if (rover.y-1 < 0) {
         offGrid = true;
       } else {
         rover.y--;
       }
       break;
     case "W":
-      if (rover.x-- < 0) {
+      if (rover.x-1 < 0) {
         offGrid = true;
       } else {
         rover.x--;
