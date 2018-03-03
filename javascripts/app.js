@@ -6,7 +6,41 @@ var rover = {
   y: 0,
   travelLog: ["0 0"]
 };
+var grid = new Array(10);
+for (var i = 0; i < 10; i++) {
+  grid[i] = new Array(10);
+} 
+//Obstacles are 'O'. Rover is represented by its direction.
 // ======================
+//grid as the grid to initialize, obstacles as the probability of obstacle to appear from 1 to 100
+function initializeGrid(grid, obstacles) {
+  for(var j = 9; j>= 0; j--){
+    for(var i = 0; i < 10; i++){
+      if(Math.random()*100 < obstacles && i != rover.x && j != rover.y){
+        grid[i][j] = "[O]";
+      }else{
+        grid[i][j] = "[ ]";
+      }
+    }
+  }
+}
+function showGrid(grid) {
+  var gridGraph = " ";
+  for(var j = 9; j>= 0; j--){
+    gridGraph += "\n";
+    for(var i = 0; i < 10; i++){
+      if(i == rover.x && j == rover.y){
+        gridGraph += '[';
+        gridGraph += rover.direction;
+        gridGraph += ']';
+      }else{
+        gridGraph += grid[i][j];
+      }  
+    }
+  }
+  return gridGraph;
+}
+
 function turnLeft(rover) {
   switch (rover.direction) {
     case "N":
@@ -45,39 +79,58 @@ function turnRight(rover) {
 
 function moveForward(rover) {
   var offGrid = false;
+  var obstacle = false;
   switch (rover.direction) {
     case "N":
       if (rover.y+1 > 9) {
         offGrid = true;
       } else {
-        rover.y++;
+        if(grid[rover.x][rover.y+1] == "[O]"){
+          obstacle = true;
+        }else{
+          rover.y++;
+        } 
       }
       break;
     case "E":
       if (rover.x+1 > 9) {
         offGrid = true;
       } else {
-        rover.x++;
+        if(grid[rover.x+1][rover.y] == "[O]"){
+          obstacle = true;
+        }else{
+          rover.x++;
+        }
       }
       break;
     case "S":
       if (rover.y-1 < 0) {
         offGrid = true;
       } else {
-        rover.y--;
+        if(grid[rover.x][rover.y-1] == "[O]"){
+          obstacle = true;
+        }else{
+          rover.y--;
+        }
       }
       break;
     case "W":
       if (rover.x-1 < 0) {
         offGrid = true;
       } else {
-        rover.x--;
+        if(grid[rover.x-1][rover.y] == "[O]"){
+          obstacle = true;
+        }else{
+          rover.x--;
+        }
       }
       break;
   }
   if (offGrid) {
     console.log("The rover cannot go forward! Limits of the grid reached!");
-  } else {
+  }else if(obstacle){
+    console.log("There's an obstacle ahead! Cannot go further!");
+  }else {
     console.log("Moved forward!");
     var x = rover.x.toString();
     var space = " ";
@@ -88,39 +141,50 @@ function moveForward(rover) {
 }
 function moveBackwards(rover){
   var offGrid = false;
+  var obstacle = false;
   switch (rover.direction) {
     case "N":
       if (rover.y-1 < 0) {
         offGrid = true;
-      } else {
+      }else if(grid[rover.x][rover.y-1] == "[O]"){
+        obstacle = true;
+      }else {
         rover.y--;
       }
       break;
     case "E":
-      if (rover.x+-1 < 0) {
+      if (rover.x-1 < 0) {
         offGrid = true;
-      } else {
+      }else if(grid[rover.x-1][rover.y] == "[O]"){
+        obstacle = true;
+      }else {
         rover.x--;
       }
       break;
     case "S":
       if (rover.y+1 > 9) {
         offGrid = true;
-      } else {
+      }else if(grid[rover.x][rover.y+1] == "[O]"){
+        obstacle = true;
+      }else {
         rover.y++;
       }
       break;
     case "W":
       if (rover.x+1 > 9) {
         offGrid = true;
-      } else {
+      }else if(grid[rover.x+1][rover.y] == "[O]"){
+        obstacle = true;
+      }else {
         rover.x++;
       }
       break;
   }
   if (offGrid) {
     console.log("The rover cannot go backwards! Limits of the grid reached!");
-  } else {
+  }else if(obstacle){
+    console.log("There's an obstacle ahead! Cannot go further!");
+  }else {
     console.log("Moved backwards!");
     var x = rover.x.toString();
     var space = " ";
