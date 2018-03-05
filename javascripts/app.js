@@ -38,12 +38,20 @@ function addRover(rovers, grid) {
 //This function shows the actual grid with possible obstacles and rovers
 function showGrid(grid) {
   var gridGraph = " ";
+  var clear = true;
+  var k = 0;
+  
   for(var j = 9; j>= 0; j--){
     gridGraph += "\n";
     for(var i = 0; i < 10; i++){
-      if(i == rover.x && j == rover.y){
+      for(k = 0; k < rovers.length; k++){
+        if(i == rovers[k].x && j == rovers[k].y){
+          clear = false;
+        }
+      }
+      if(!clear){
         gridGraph += '[';
-        gridGraph += rover.direction;
+        gridGraph += rovers[k].direction;
         gridGraph += ']';
       }else{
         gridGraph += grid[i][j];
