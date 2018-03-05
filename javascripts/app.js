@@ -41,6 +41,7 @@ function addRover(rovers, grid) {
       travelLog: ["0 0"]
     };
     rovers.push(rover);
+    console.log("Brand new rover ready in initial position!");
   }
 }
 
@@ -73,87 +74,87 @@ function showGrid(grid, rovers) {
   return gridGraph;
 }
 
-function turnLeft(rover) {
-  switch (rover.direction) {
+function turnLeft(rovers, i) {
+  switch (rovers[i].direction) {
     case "N":
-      rover.direction = "W";
+    rovers[i].direction = "W";
       break;
     case "E":
-      rover.direction = "N";
+    rovers[i].direction = "N";
       break;
     case "S":
-      rover.direction = "E";
+    rovers[i].direction = "E";
       break;
     case "W":
-      rover.direction = "S";
+    rovers[i].direction = "S";
       break;
   }
-  console.log("Turned left!");
+  console.log("Rover number "+i+" turned left!");
 }
 
-function turnRight(rover) {
-  switch (rover.direction) {
+function turnRight(rovers, i) {
+  switch (rovers[i].direction) {
     case "N":
-      rover.direction = "E";
+    rovers[i].direction = "E";
       break;
     case "E":
-      rover.direction = "S";
+    rovers[i].direction = "S";
       break;
     case "S":
-      rover.direction = "W";
+    rovers[i].direction = "W";
       break;
     case "W":
-      rover.direction = "N";
+    rovers[i].direction = "N";
       break;
   }
   console.log("Turned right!");
 }
 
-function moveForward(rover) {
+function moveForward(rovers, i) {
   var offGrid = false;
   var obstacle = false;
-  switch (rover.direction) {
+  switch (rovers[i].direction) {
     case "N":
-      if (rover.y+1 > 9) {
+      if (rovers[i].y+1 > 9) {
         offGrid = true;
       } else {
-        if(grid[rover.x][rover.y+1] == "[O]"){
+        if(grid[rovers[i].x][rovers[i].y+1] == "[O]"){
           obstacle = true;
         }else{
-          rover.y++;
+          rovers[i].y++;
         } 
       }
       break;
     case "E":
-      if (rover.x+1 > 9) {
+      if (rovers[i].x+1 > 9) {
         offGrid = true;
       } else {
-        if(grid[rover.x+1][rover.y] == "[O]"){
+        if(grid[rovers[i].x+1][rovers[i].y] == "[O]"){
           obstacle = true;
         }else{
-          rover.x++;
+          rovers[i].x++;
         }
       }
       break;
     case "S":
-      if (rover.y-1 < 0) {
+      if (rovers[i].y-1 < 0) {
         offGrid = true;
       } else {
-        if(grid[rover.x][rover.y-1] == "[O]"){
+        if(grid[rovers[i].x][rovers[i].y-1] == "[O]"){
           obstacle = true;
         }else{
-          rover.y--;
+          rovers[i].y--;
         }
       }
       break;
     case "W":
-      if (rover.x-1 < 0) {
+      if (rovers[i].x-1 < 0) {
         offGrid = true;
       } else {
-        if(grid[rover.x-1][rover.y] == "[O]"){
+        if(grid[rovers[i].x-1][rovers[i].y] == "[O]"){
           obstacle = true;
         }else{
-          rover.x--;
+          rovers[i].x--;
         }
       }
       break;
@@ -164,14 +165,15 @@ function moveForward(rover) {
     console.log("There's an obstacle ahead! Cannot go further!");
   }else {
     console.log("Moved forward!");
-    var x = rover.x.toString();
+    var x = rovers[i].x.toString();
     var space = " ";
-    var y = rover.y.toString();
+    var y = rovers[i].y.toString();
     var coords = x.concat(space);
-    rover.travelLog.push(coords.concat(y));
+    rovers[i].travelLog.push(coords.concat(y));
   }
 }
-function moveBackwards(rover){
+function moveBackwards(rovers, i){
+  var rover = rovers[i];
   var offGrid = false;
   var obstacle = false;
   switch (rover.direction) {
@@ -227,21 +229,22 @@ function moveBackwards(rover){
 
 }
 
-function commands(commands) {
+function commands(commands, rovers, index) {
+  var rover = rovers[index];
   for (var i = 0; i < commands.length; i++) {
     var command = commands[i];
     switch (command) {
       case "f":
-        moveForward(rover);
+        moveForward(rovers, index);
         break;
       case "r":
-        turnRight(rover);
+        turnRight(rovers, index);
         break;
       case "l":
-        turnLeft(rover);
+        turnLeft(rovers, index);
         break;
       case "b":
-        moveBackwards(rover);
+        moveBackwards(rovers, index);
         break;
       default: 
         console.log("Unknown command!");
