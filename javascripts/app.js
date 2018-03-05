@@ -11,7 +11,7 @@ for (var i = 0; i < 10; i++) {
 function initializeGrid(grid, obstacles) {
   for(var j = 9; j>= 0; j--){
     for(var i = 0; i < 10; i++){
-      if(Math.random()*100 < obstacles && i != rover.x && j != rover.y){
+      if(Math.random()*100 < obstacles && i != 0 && j != 0){
         grid[i][j] = "[O]";
       }else{
         grid[i][j] = "[ ]";
@@ -19,10 +19,19 @@ function initializeGrid(grid, obstacles) {
     }
   }
 }
+function showRovers(rovers){
+  return rovers;
+}
 //You can add a rover in the initial position heading north. 
 //Rovers as the rover array and grid as the grid.
 function addRover(rovers, grid) {
-  if(grid[0][0] != "[ ]"){
+  var clear = true;
+  rovers.forEach(function(element) {
+    if(element.x == 0 && element.y == 0){
+      clear = false;
+    }
+  });
+  if(!clear){
     console.log("There is already a rover in the initial position! Move it first!");
   }else {
     var rover = {
@@ -36,19 +45,22 @@ function addRover(rovers, grid) {
 }
 
 //This function shows the actual grid with possible obstacles and rovers
-function showGrid(grid) {
+function showGrid(grid, rovers) {
   var gridGraph = " ";
-  var clear = true;
-  var k = 0;
-  
+  var clear;
+  var k;
+
   for(var j = 9; j>= 0; j--){
+    clear = true;
     gridGraph += "\n";
     for(var i = 0; i < 10; i++){
-      for(k = 0; k < rovers.length; k++){
-        if(i == rovers[k].x && j == rovers[k].y){
+      clear = true;
+      rovers.forEach(function(element, index) {
+        if(element.x == i && element.y == j){
           clear = false;
+          k = index;
         }
-      }
+      });
       if(!clear){
         gridGraph += '[';
         gridGraph += rovers[k].direction;
