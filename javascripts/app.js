@@ -1,11 +1,6 @@
 // Rover Object Goes Here
 // ======================
-var rover = {
-  direction: "N",
-  x: 0,
-  y: 0,
-  travelLog: ["0 0"]
-};
+var rovers = [];
 var grid = new Array(10);
 for (var i = 0; i < 10; i++) {
   grid[i] = new Array(10);
@@ -24,6 +19,23 @@ function initializeGrid(grid, obstacles) {
     }
   }
 }
+//You can add a rover in the initial position heading north. 
+//Rovers as the rover array and grid as the grid.
+function addRover(rovers, grid) {
+  if(grid[0][0] != "[ ]"){
+    console.log("There is already a rover in the initial position! Move it first!");
+  }else {
+    var rover = {
+      direction: "N",
+      x: 0,
+      y: 0,
+      travelLog: ["0 0"]
+    };
+    rovers.push(rover);
+  }
+}
+
+//This function shows the actual grid with possible obstacles and rovers
 function showGrid(grid) {
   var gridGraph = " ";
   for(var j = 9; j>= 0; j--){
